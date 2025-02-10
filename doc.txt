@@ -1,0 +1,226 @@
+int g0/0
+ip add 192.168.2.5 255.255.255.252
+ipv6 add 2001:db8:cafe:d::1/64
+no shut
+exit
+
+
+ sw
+int vlan 10
+exit
+int vlan 20
+exit
+
+int f0/1
+switchport mode access 
+switchport access vlan 10
+exit
+
+int f0/2
+switchport mode access 
+switchport access vlan 40
+exit
+
+int g0/2
+switchport mode trunk
+switchport trunk allowed vlan 1,10,20,30,40
+exit
+
+
+ Router left & right 
+int g0/2
+no shut
+exit
+
+int g0/2.40
+ip add 192.168.40.129 255.255.255.128
+encapsulation dot1q 40
+exit
+int g0/2.40
+ip helper-add 192.168.10.14
+exit
+
+ ip route 
+ip route 0.0.0.0 0.0.0.0 192.168.10.1
+ip route 0.0.0.0 0.0.0.0 192.168.10.6
+ipv6 route ::/0 2001:db8:cafe:b::2
+ipv6 route ::/0 2001:db8:cafe:a::1
+
+statefull ip config 
+
+int g0/2.30
+encapsulation dot1q 30
+exit
+
+ipv6 dhcp pool LAN-3
+dns-server 2001:db8:acad:a::100
+domain-name example.com
+exit
+
+ipv6 dhcp pool LAN-4
+dns-server 2001:db8:acad:a::100
+domain-name example.com
+exit
+
+int g0/2.30
+encapsulation dot1q 30
+ipv6 add 2001:db8:acad:30::1/64
+ipv6 nd other-config-flag
+ipv6 dhcp server LAN-3
+exit
+
+int g0/2.40
+encapsulation dot1q 40
+ipv6 add 2001:db8:acad:40::1/64
+ipv6 nd other-config-flag
+ipv6 dhcp server LAN-4
+exit
+
+used encryption methode for improve secure
+hostname sw1
+ip domain-name example.com
+crypto key generate rsa
+1024
+
+username admin privilege 15 //enable ssh secure protocoll
+username admin privilege 15 secret 15
+username admin privilege 15 secret cisco
+line vty 0 4
+transport input ssh
+login
+exit
+enable secret cisco
+service password-encryption
+
+
+
+2
+vlan 10
+exit
+vlan 20
+exit
+vlan 30
+exit
+vlan 40
+exit
+
+int range f0/1-14
+switchport mode access
+switchport access vlan 40
+exit
+
+int range f0/15-24
+switchport mode access
+switchport access vlan 20
+exit
+
+int g0/2
+switchport mode trunk
+switchport trunk allowed vlan all
+exit 
+
+R
+int g0/2.40
+encapsulation dot1q 40
+ip add 192.168.5.113 255.255.255.240
+ip helper-add 192.168.2.2
+ipv6 add 2001:db8:cafe:d::1/64
+ipv6 nd other-config-flag
+ipv6 dhcp pool POOL-A
+exit
+
+ipv6 dhcp pool POOL-A
+dns-server 2001:db8:dad:a::10
+domain-name mis.abc.org
+exit
+
+router ospf 1
+router-id 1.1.1.1
+net 192.168.2.4 0.0.0.3 area 0
+do sh ip ospf neighbor
+do sh ip ospf database
+
+
+route ip net sub -> next ip
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
